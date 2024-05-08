@@ -22,10 +22,22 @@ where = "WHERE {condition}"
 order = "ORDER BY {order}"
 s3_copy = """
         copy {table_name} from {s3_part} 
-        credentials 'aws_iam_role'={iam_role} 
-        {opt}
+        iam_role {iam_role} 
+        region 'us-east-2'
+        format as json {opt}
         """
 # gzip delimiter ';' compupdate off region 'us-west-2'
+
+"""
+        copy staging_songs from 's3://pmt-uda-bucket-us-east-2/song_data/A' 
+        iam_role 'arn:aws:iam::016036110502:role/pmt_redshift' region 'us-east-2' format as json 'auto';
+        
+                copy staging_events from 's3://pmt-uda-bucket-us-east-2/song_data/2018-11-12-events.json' 
+        iam_role 'arn:aws:iam::016036110502:role/pmt_redshift'
+        region 'us-east-2' format as json 's3://pmt-uda-bucket-us-east-2/song_data/log_json_path.json'
+
+"""
+
 # TABLE NAME
 STAGING_EVENTS = "staging_events"
 STAGING_SONGS = "staging_songs"
@@ -52,7 +64,7 @@ create_table_queries = [
     create_table.format(
         table_name=STAGING_SONGS,
         atbs=f"""
-            artist_id           BIGINT,
+            artist_id           VARCHAR(100),
             artist_latitude     VARCHAR(100),
             artist_location     VARCHAR(100),
             artist_longitude    VARCHAR(100),
@@ -83,7 +95,7 @@ create_table_queries = [
             status              INT,
             ts                  BIGINT,
             userAgent           VARCHAR(1000),
-            userId              BIGINT,
+            userId              BIGINT
         """
     ),
     create_table.format(
@@ -100,8 +112,8 @@ create_table_queries = [
     create_table.format(
         table_name=SONGS,
         atbs=f"""
-            song_id             BIGINT       NOT NULL,
-            artist_id           BIGINT       NOT NULL,
+            song_id             VARCHAR(100) NOT NULL,
+            artist_id           VARCHAR(100) NOT NULL,
             title               VARCHAR(100) NOT NULL, 
             year                INT          NOT NULL,
             duration            FLOAT        NOT NULL,
@@ -111,7 +123,7 @@ create_table_queries = [
     create_table.format(
         table_name=ARTISTS,
         atbs=f"""
-            artist_id           BIGINT       NOT NULL,
+            artist_id           VARCHAR(100) NOT NULL,
             name                VARCHAR(100) NOT NULL,
             location            VARCHAR(100),
             latitude            VARCHAR(100),
@@ -137,8 +149,8 @@ create_table_queries = [
         atbs=f"""
             songplay_id         BIGINT      NOT NULL IDENTITY(0,1),
             user_id             BIGINT      NOT NULL,
-            song_id             BIGINT      NOT NULL,
-            artist_id           BIGINT      NOT NULL,
+            song_id             VARCHAR(100)NOT NULL,
+            artist_id           VARCHAR(100)NOT NULL,
             start_time          BIGINT      NOT NULL,
             level               VARCHAR(20) NOT NULL,
             session_id          BIGINT,
@@ -158,7 +170,7 @@ staging_events_copy = s3_copy.format(
     table_name=STAGING_EVENTS,
     s3_part=LOG_DATA,
     iam_role=DWH_ROLE_ARN,
-    opt=f"""json {LOG_JSONPATH}"""
+    opt=f"""{LOG_JSONPATH}"""
 
 )
 
@@ -166,7 +178,7 @@ staging_songs_copy = s3_copy.format(
     table_name=STAGING_SONGS,
     s3_part=SONG_DATA,
     iam_role=DWH_ROLE_ARN,
-    opt=""
+    opt="'auto'"
 )
 
 # FINAL TABLES
@@ -175,20 +187,20 @@ songplay_table_insert = insert_from_select.format(
     des_tbl=SONG_PLAY,
     atbs="start_time, user_id, level, song_id, artist_id, session_id, location, user_agent",
     values="""
-    DISTINCT(
+    DISTINCT
         ts              AS start_time,
         userId          AS user_id,
         lever,
-        s.song_id,
-        a.artist_id,
+        ss.song_id,
+        ss.artist_id,
         sessionId       AS session_id,
         location,
-        userAgent       AS user_agent,
-    )""",
+        userAgent       AS user_agent
+    """,
     org_tbl=f""" 
-        {STAGING_SONGS} ss
-        JOIN {SONGS} s ON (ss.song = s.title)
-        JOIN {ARTISTS} a ON (ss.artist = s.name)
+        {STAGING_EVENTS} as se
+        JOIN {STAGING_SONGS} as ss on (se.song = ss.title)
+        where se.song is not null 
     """,
 )
 
@@ -196,28 +208,26 @@ user_table_insert = insert_from_select.format(
     des_tbl=USERS,
     atbs="user_id, first_name, last_name, gender, level",
     values="""
-    DISTINCT(
-        user_id,
+    DISTINCT
+        userid          AS user_id,
         firstName       AS first_name,
         lastName        AS last_name,
         gender,
-        level
-    )
+        level  
     """,
-    org_tbl=STAGING_EVENTS,
+    org_tbl=STAGING_EVENTS + " where userid is not null",
 )
 
 song_table_insert = insert_from_select.format(
     des_tbl=SONGS,
     atbs="song_id, title, artist_id, year, duration",
     values="""
-    DISTINCT(
+    DISTINCT
         song_id,
         title,
         artist_id,
         year,
         duration
-    )
     """,
     org_tbl=STAGING_SONGS,
 )
@@ -226,26 +236,30 @@ artist_table_insert = insert_from_select.format(
     des_tbl=ARTISTS,
     atbs="artist_id, name, location, latitude, longitude",
     values="""
-    DISTINCT(
+    DISTINCT
         artist_id,
         artist_name         AS name,
-        artist_location     AS location,
+        artist_location     AS "location",
         artist_latitude     AS latitude,
         artist_longitude    AS longitude
-    )
     """,
     org_tbl=STAGING_SONGS,
 )
 
 time_table_insert = insert_from_select.format(
     des_tbl=TIME,
-    atbs="start_time",
+    atbs="start_time, hour, day, week, month, year, weekday",
     values="""
-    DISTINCT(
-        ts              AS start_time
-    )
+    DISTINCT
+        ts as start_time, 
+        extract(hour from  timestamp 'epoch' + ts/1000 * interval '1 second') as hour,
+        extract(day from  timestamp 'epoch' + ts/1000 * interval '1 second') as day,
+        extract(week from  timestamp 'epoch' + ts/1000 * interval '1 second') as week,
+        extract(month from  timestamp 'epoch' + ts/1000 * interval '1 second') as month,
+        extract(year from  timestamp 'epoch' + ts/1000 * interval '1 second') as year,
+        extract(weekday from  timestamp 'epoch' + ts/1000 * interval '1 second') as weekday
     """,
-    org_tbl=STAGING_SONGS,
+    org_tbl=STAGING_EVENTS,
 )
 
 copy_table_queries = [
@@ -256,6 +270,6 @@ insert_table_queries = [
     user_table_insert,
     song_table_insert,
     artist_table_insert,
-    # time_table_insert,
+    time_table_insert,
     songplay_table_insert
 ]
