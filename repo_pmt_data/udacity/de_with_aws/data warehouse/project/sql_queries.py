@@ -23,9 +23,9 @@ order = "ORDER BY {order}"
 s3_copy = """
         copy {table_name} from {s3_part} 
         credentials 'aws_iam_role'={iam_role} 
-        
+        {opt}
         """
-#gzip delimiter ';' compupdate off region 'us-west-2'
+# gzip delimiter ';' compupdate off region 'us-west-2'
 # TABLE NAME
 STAGING_EVENTS = "staging_events"
 STAGING_SONGS = "staging_songs"
@@ -158,12 +158,15 @@ staging_events_copy = s3_copy.format(
     table_name=STAGING_EVENTS,
     s3_part=LOG_DATA,
     iam_role=DWH_ROLE_ARN,
+    opt=f"""json {LOG_JSONPATH}"""
+
 )
 
 staging_songs_copy = s3_copy.format(
     table_name=STAGING_SONGS,
     s3_part=SONG_DATA,
     iam_role=DWH_ROLE_ARN,
+    opt=""
 )
 
 # FINAL TABLES
