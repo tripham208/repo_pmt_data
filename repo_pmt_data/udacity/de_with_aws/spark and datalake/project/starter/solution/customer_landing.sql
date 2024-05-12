@@ -20,6 +20,6 @@ CREATE EXTERNAL TABLE `customer_landing`
         OUTPUTFORMAT
             'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
     LOCATION
-        's3://seans-stedi-lakehouse/customer/landing/'
+        's3://pmt-bucket-us-east-2/stedi/customer/landing/'
     TBLPROPERTIES (
         'classification' = 'json')

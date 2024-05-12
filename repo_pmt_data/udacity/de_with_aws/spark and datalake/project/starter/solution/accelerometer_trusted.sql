@@ -1,4 +1,4 @@
-CREATE EXTERNAL TABLE IF NOT EXISTS `stedi`.`accelerometer_landing`
+CREATE EXTERNAL TABLE IF NOT EXISTS `stedi`.`accelerometer_trusted`
 (
     `user`      string,
     `timeStamp` bigint,
@@ -6,8 +6,8 @@ CREATE EXTERNAL TABLE IF NOT EXISTS `stedi`.`accelerometer_landing`
     `y`         float,
     `z`         float
 )
-    ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+    ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
         WITH SERDEPROPERTIES (
         'serialization.format' = '1'
-        ) LOCATION 's3://seans-stedi-lakehouse/accelerometer/landing'
+        ) LOCATION 's3://pmt-bucket-us-east-2/stedi/accelerometer/trusted/'
     TBLPROPERTIES ('has_encrypted_data' = 'false');

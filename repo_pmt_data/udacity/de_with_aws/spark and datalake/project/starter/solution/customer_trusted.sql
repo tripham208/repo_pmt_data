@@ -13,5 +13,5 @@ CREATE EXTERNAL TABLE IF NOT EXISTS `stedi`.`customer_trusted`
     ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
         WITH SERDEPROPERTIES (
         'serialization.format' = '1'
-        ) LOCATION 's3://stedi-lake-house/customer/trusted/'
+        ) LOCATION 's3://pmt-bucket-us-east-2/stedi/customer/trusted/'
     TBLPROPERTIES ('has_encrypted_data' = 'false');

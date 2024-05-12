@@ -9,5 +9,5 @@ CREATE EXTERNAL TABLE IF NOT EXISTS `stedi`.`accelerometer_landing`
     ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
         WITH SERDEPROPERTIES (
         'serialization.format' = '1'
-        ) LOCATION 's3://seans-stedi-lakehouse/accelerometer/landing'
+        ) LOCATION 's3://pmt-bucket-us-east-2/stedi/accelerometer/landing'
     TBLPROPERTIES ('has_encrypted_data' = 'false');
