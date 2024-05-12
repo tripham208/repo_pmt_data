@@ -20,18 +20,17 @@ spark = SparkSession \
     .appName("Maps and Lazy Evaluation Example") \
     .getOrCreate()
 
-
 # Starting off with a regular python list
 log_of_songs = [
-        "Despacito",
-        "Nice for what",
-        "No tears left to cry",
-        "Despacito",
-        "Havana",
-        "In my feelings",
-        "Nice for what",
-        "despacito",
-        "All the stars"
+    "Despacito",
+    "Nice for what",
+    "No tears left to cry",
+    "Despacito",
+    "Havana",
+    "In my feelings",
+    "Nice for what",
+    "despacito",
+    "All the stars"
 ]
 
 # parallelize the log_of_songs to use with Spark
@@ -47,14 +46,15 @@ distributed_song_log_rdd = spark.sparkContext.parallelize(log_of_songs)
 # show the original input data is preserved
 distributed_song_log_rdd.foreach(print)
 
+
 def convert_song_to_lowercase(song):
     return song.lower()
 
+
 print(convert_song_to_lowercase("Havana"))
 
-
-# toDF() Converts from an RDD to a DataFrame- this allows us to use convenient functions like show() 
-lower_case_songs=distributed_song_log_rdd.map(convert_song_to_lowercase)
+# toDF() Converts from an RDD to a DataFrame- this allows us to use convenient functions like show()
+lower_case_songs = distributed_song_log_rdd.map(convert_song_to_lowercase)
 lower_case_songs.foreach(print)
 
 # Show the original input data is still mixed case
