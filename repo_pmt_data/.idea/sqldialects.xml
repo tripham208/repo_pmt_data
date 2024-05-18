@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/data pipeline - airflow/final_project/final_project_sql_statements.py" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/lesson-4-data-in-a-lakehouse/exercises/concept1-define-a-cusomter-landing-zone-table/solution/customer_landing.sql" dialect="HiveQL" />
     <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/lesson-4-data-in-a-lakehouse/exercises/concept1-define-a-cusomter-landing-zone-table/solution/customer_trusted.sql" dialect="HiveQL" />
     <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/lesson-4-data-in-a-lakehouse/exercises/concept2-define-an-accelerometer-landing-zone-table/solution/accelerometer_landing.sql" dialect="HiveQL" />
     <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/lesson-4-data-in-a-lakehouse/exercises/concept3-athena-joins/solution/join_customer_trusted_accelerometer_landing.sql" dialect="HiveQL" />
-    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/project/starter/solution/accelerometer_landing.sql" dialect="HiveQL" />
-    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/project/starter/solution/accelerometer_trusted.sql" dialect="HiveQL" />
-    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/project/starter/solution/customer_curated.sql" dialect="HiveQL" />
-    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/project/starter/solution/customer_landing.sql" dialect="HiveQL" />
-    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/project/starter/solution/customer_trusted.sql" dialect="HiveQL" />
-    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/project/starter/solution/machine_learning_curated.sql" dialect="HiveQL" />
-    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/project/starter/solution/step_trainer_landing.sql" dialect="HiveQL" />
-    <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/project/starter/solution/step_trainer_trusted.sql" dialect="HiveQL" />
   </component>
 </project>
