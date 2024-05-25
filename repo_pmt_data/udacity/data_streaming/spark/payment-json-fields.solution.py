@@ -13,12 +13,12 @@ redisMessageSchema = StructType(
         StructField("existType", StringType()),
         StructField("ch", StringType()),
         StructField("incr",BooleanType()),
-        StructField("zSetEntries", ArrayType( \
+        StructField("zSetEntries", ArrayType(
             StructType([
-                StructField("element", StringType()),\
-                StructField("score", StringType())   \
-            ]))                                      \
-        )
+                StructField("element", StringType()),
+                StructField("score", StringType())
+            ]))
+                    )
 
     ]
 )
