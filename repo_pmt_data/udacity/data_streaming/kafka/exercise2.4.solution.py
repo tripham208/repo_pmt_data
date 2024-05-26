@@ -4,7 +4,8 @@ import json
 import random
 
 from confluent_kafka import Consumer, Producer
-from confluent_kafka.admin import AdminClient, NewTopic
+from confluent_kafka.admin import AdminClient
+from confluent_kafka.cimpl import NewTopic
 from faker import Faker
 
 

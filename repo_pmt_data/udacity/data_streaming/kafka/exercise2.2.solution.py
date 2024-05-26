@@ -1,8 +1,8 @@
 import asyncio
 
 from confluent_kafka import Consumer, Producer
-from confluent_kafka.admin import AdminClient, NewTopic
-
+from confluent_kafka.admin import AdminClient
+from confluent_kafka.cimpl import NewTopic
 
 BROKER_URL = "PLAINTEXT://localhost:9092"
 
