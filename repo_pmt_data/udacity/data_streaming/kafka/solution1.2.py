@@ -1,8 +1,8 @@
 import asyncio
 
 from confluent_kafka import Consumer, Producer
-from confluent_kafka.admin import AdminClient, NewTopic
-
+from confluent_kafka.admin import AdminClient
+from confluent_kafka.cimpl import NewTopic
 
 BROKER_URL = "PLAINTEXT://localhost:9092"
 TOPIC_NAME = "my-first-python-topic"
@@ -73,8 +73,8 @@ def main():
     #       See: https://docs.confluent.io/current/clients/confluent-kafka-python/#confluent_kafka.admin.NewTopic
     topic = NewTopic(TOPIC_NAME, num_partitions=1, replication_factor=1)
 
-    # TODO: Using `client`, create the topic
-    #       See: https://docs.confluent.io/current/clients/confluent-kafka-python/#confluent_kafka.admin.AdminClient.create_topics
+    # TODO: Using `client`, create the topic See:
+    #  https://docs.confluent.io/current/clients/confluent-kafka-python/#confluent_kafka.admin.AdminClient.create_topics
     client.create_topics([topic])
 
     try:
@@ -82,8 +82,9 @@ def main():
     except KeyboardInterrupt as e:
         print("shutting down")
     finally:
-        # TODO: Using `client`, delete the topic
-        #       See: https://docs.confluent.io/current/clients/confluent-kafka-python/#confluent_kafka.admin.AdminClient.delete_topics
+        # TODO: Using `client`, delete the topic See:
+        #  https://docs.confluent.io/current/clients/confluent-kafka-python/#confluent_kafka.admin.AdminClient
+        #  .delete_topics
         client.delete_topics([topic])
 
 

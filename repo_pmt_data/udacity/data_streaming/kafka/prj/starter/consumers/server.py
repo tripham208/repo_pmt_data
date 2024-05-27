@@ -42,12 +42,12 @@ class MainHandler(tornado.web.RequestHandler):
 def run_server():
     """Runs the Tornado Server and begins Kafka consumption"""
     if topic_check.topic_exists("TURNSTILE_SUMMARY") is False:
-        logger.fatal(
+        logger.critical(
             "Ensure that the KSQL Command has run successfully before running the web server!"
         )
         exit(1)
-    if topic_check.topic_exists("org.chicago.cta.stations.table.v1") is False:
-        logger.fatal(
+    if topic_check.topic_constrain("stations.table") is False:
+        logger.critical(
             "Ensure that Faust Streaming is running successfully before running the web server!"
         )
         exit(1)

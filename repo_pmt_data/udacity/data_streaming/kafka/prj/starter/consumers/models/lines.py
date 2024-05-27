@@ -2,7 +2,8 @@
 import json
 import logging
 
-from models import Line
+from udacity.data_streaming.kafka.prj.starter.consumers.models import Line
+
 
 
 logger = logging.getLogger(__name__)

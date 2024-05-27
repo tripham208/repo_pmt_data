@@ -3,7 +3,7 @@ import collections
 from enum import IntEnum
 import logging
 
-from models import Station, Train
+from udacity.data_streaming.kafka.prj.starter.producers.models import Station, Train
 
 
 logger = logging.getLogger(__name__)

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/udacity/data_streaming/kafka/prj/starter/consumers/ksql.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/udacity/data_streaming/kafka/prj/starter/load_stations.sql" dialect="Greenplum" />
     <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/lesson-4-data-in-a-lakehouse/exercises/concept1-define-a-cusomter-landing-zone-table/solution/customer_landing.sql" dialect="HiveQL" />
     <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/lesson-4-data-in-a-lakehouse/exercises/concept1-define-a-cusomter-landing-zone-table/solution/customer_trusted.sql" dialect="HiveQL" />
     <file url="file://$PROJECT_DIR$/udacity/de_with_aws/spark and datalake/lesson-4-data-in-a-lakehouse/exercises/concept2-define-an-accelerometer-landing-zone-table/solution/accelerometer_landing.sql" dialect="HiveQL" />
